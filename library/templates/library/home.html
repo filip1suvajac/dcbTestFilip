@@ -1,0 +1,118 @@
+{% load static %} {% block content%}
+<!DOCTYPE html>
+<html lang="sl" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'library/styles.css' %}" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <div class="h-screen bg-[#3A5AA3] flex flex-col gap-8 items-center justify-center">
+      <div class=" flex gap-8 z-10">
+        <div class="hover-3d">
+          <figure class="w-40 rounded-2xl">
+            <img
+              src="{% static 'library/bible.jpg' %}"
+              alt="Tailwind CSS 3D card"
+            />
+          </figure>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+
+        <div class="hover-3d">
+          <figure class="w-40 rounded-2xl">
+            <img
+              src="{% static 'library/donq.jpg' %}"
+              alt="Tailwind CSS 3D hover"
+            />
+          </figure>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+
+        <div class="hover-3d">
+          <figure class="w-40 rounded-2xl">
+            <img
+              src="{% static 'library/mocking.jpg' %}"
+              alt="Tailwind CSS 3D hover"
+            />
+          </figure>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+
+    <form method="POST" class="flex flex-col items-center gap-6">
+    {% csrf_token %}
+
+    <label class="input input-lg w-72">
+      <svg
+        class="h-[1em] opacity-50"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <g
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          stroke-width="2.5"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
+          ></path>
+          <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
+        </g>
+      </svg>
+      <input
+        type="password"
+        name="password"
+        required
+        placeholder="Password"
+        minlength="6"
+        class=
+      />
+    </label>
+      {% if error %}<p class="text-red-500">{{ error }}</p>{% endif %}
+
+    <button type="submit" class="btn btn-lg bg-white mt-[-10px] text-md text-stone-700 border-[#e5e5e5]">
+      Login 
+    </button>
+  </form>
+    
+  </body>
+  {% endblock %}
+</html>

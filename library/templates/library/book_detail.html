@@ -1,0 +1,76 @@
+{% extends "library/dashboard_base.html" %} {% block content %}
+
+<div class="breadcrumbs text-sm pl-8 pt-7">
+  <ul>
+    <li>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        class="h-4 w-4 mr-2 stroke-current"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+        ></path>
+      </svg>
+      Home
+    </li>
+    <li>
+      <a href="/books">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          class="h-4 w-4 stroke-current"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+          />
+        </svg>
+        Books
+      </a>
+    </li>
+    <li>
+      <a href="/books">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          class="h-4 w-4 stroke-current"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+          />
+        </svg>
+        {{book.name}}
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="ml-8 mt-6 max-w-[90%] bg-base-100 rounded-box p-8">
+  <h1 class="text-2xl font-semibold mb-4">{{ book.name }}</h1>
+
+  <div class="space-y-2 text-stone-700">
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p><strong>Year:</strong> {{ book.year }}</p>
+    <p><strong>Category:</strong> {{ book.category.name }}</p>
+    <p><strong>Rating:</strong> {{ book.rating|default:"–" }}/10</p>
+  </div>
+
+  <div class="mt-6">
+    <h2 class="text-lg font-medium mb-2">Description</h2>
+    <p class="leading-relaxed text-stone-600">{{ book.desc }}</p>
+  </div>
+</div>
+
+{% endblock %}

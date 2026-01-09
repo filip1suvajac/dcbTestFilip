@@ -11,6 +11,7 @@ class Book(models.Model):
     name = models.CharField(max_length=200)
     author = models.CharField(max_length=120)
     year = models.PositiveIntegerField()
+    loved = models.BooleanField(default=False)
     rating = models.PositiveSmallIntegerField(
         null=True,
         blank=True,

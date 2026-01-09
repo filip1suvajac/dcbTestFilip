@@ -13,8 +13,6 @@ class Book(models.Model):
     year = models.PositiveIntegerField()
     loved = models.BooleanField(default=False)
     rating = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
         validators=[MinValueValidator(1), MaxValueValidator(10)],
     )
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="books")

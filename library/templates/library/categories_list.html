@@ -1,6 +1,9 @@
 {% extends "library/dashboard_base.html" %} {% block content %}
+<div id="toast-root" class="toast toast-top toast-middle hidden"></div>
 
-<div class="breadcrumbs text-sm pl-8 pt-7">
+
+<div class="flex items-center justify-between px-8 pt-7">
+  <div class="breadcrumbs text-sm ">
   <ul>
     <li>
         <svg
@@ -36,11 +39,43 @@
       </a>
     </li>
   </ul>
+  </div>
+  <button class="btn btn-primary bg-primary hover:translate-y-[-2px] transition-all duration-150" onclick="my_modal_2.showModal()">Add new Category</button>
+
+<dialog id="my_modal_2" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold mb-5">Add new Category</h3>
+
+    <input id="cat-name" type="text" placeholder="Category name"
+           class="input w-full mt-2" />
+
+    <div class="modal-action">
+      <button id="cat-save" class="btn btn-primary">Save</button>
+      <button class="btn btn-error btn-outline" onclick="my_modal_2.close()">Close</button>
+    </div>
+  </div>
+
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
 </div>
+
+<dialog id="delete_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Delete category?</h3>
+    <p class="py-2" id="delete_text"></p>
+    <div class="modal-action">
+      <button id="delete_confirm" class="btn btn-error">Delete</button>
+      <form method="dialog"><button class="btn">Cancel</button></form>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
 
 <div class="h-full flex justify-left ml-10">
 
-<div class="mt-6 w-[95%] h-[calc(100vh-200px)] overflow-y-auto rounded-box bg-base-100 border bg-white border-stone-300">
+<div class="mt-6 w-[95%] h-[calc(100vh-200px)] overflow-y-auto rounded-box bg-base-100 border bg-base-100 border-base-300">
   <table class="table table-zebra">
     <thead class="sticky top-0 bg-base-100 z-10">
       <tr>
@@ -49,30 +84,17 @@
         <th>Actions</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="category-table">
   {% for c in categories %}
     <tr>
     <td>{{ c.name }}</td>
     <td>{{ c.books.count }}</td>
     <td class="w-[1%] whitespace-nowrap text-right">
-      <a class="btn btn-sm" href="#"
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-          />
-        </svg>
-        <span class="text-sm">Edit</span>
-      </a>
-      <button class="btn btn-sm btn-error">
+      <button class="btn btn-sm btn-error js-del"
+          data-id="{{ c.id }}"
+          data-name="{{ c.name }}"
+          data-count="{{ c.books.count }}">
+          
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -98,3 +120,123 @@
   {% endfor %} {% endblock %}
 </div>
 </div>
+
+{% block extra_js %}
+
+<script>
+  console.log("categories modal js loaded");
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  function showToast(msg, type="success") {
+    const root = document.getElementById("toast-root");
+    root.classList.remove("hidden");
+    root.innerHTML = `
+      <div class="alert alert-${type}">
+        <span>${msg}</span>
+      </div>
+    `;
+    setTimeout(() => root.classList.add("hidden"), 2000);
+  }
+
+  document.getElementById("cat-save").addEventListener("click", async () => {
+    const nameEl = document.getElementById("cat-name");
+    const name = nameEl.value.trim();
+    if (!name) return showToast("Enter Category Name.", "error");
+
+    const formData = new FormData();
+    formData.append("name", name);
+
+    const res = await fetch("{% url 'category_create' %}", {
+      method: "POST",
+      headers: { "X-CSRFToken": getCookie("csrftoken") },
+      body: formData,
+      credentials: "same-origin",
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) {
+      return showToast(data.error || "Error.", "error");
+    }
+
+    const tbody = document.getElementById("category-table");
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+    <td>${ data.name }</td>
+    <td>${ data.book_count }</td>
+    <td class="w-[1%] whitespace-nowrap text-right">
+      <button class="btn btn-sm btn-error">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+          />
+        </svg>
+        <span class="text-sm">Delete</span>
+      </button>
+      </td>
+    `;
+    tbody.prepend(tr);
+
+    nameEl.value = "";
+    my_modal_2.close();
+    showToast("Uspešno dodano.", "success");
+  });
+  let pendingDelete = { id: null, rowEl: null };
+
+document.getElementById("category-table").addEventListener("click", (e) => {
+  const btn = e.target.closest(".js-del");
+  if (!btn) return;
+
+  const id = btn.dataset.id;
+  const name = btn.dataset.name;
+  const count = Number(btn.dataset.count || 0);
+
+  if (count > 0) {
+    return showToast("Cannot delete a category, which has a book to it.", "error");
+  }
+
+  pendingDelete.id = id;
+  pendingDelete.rowEl = btn.closest("tr");
+
+  document.getElementById("delete_text").textContent =
+    `Are you sure you want to delete "${name}"?`;
+
+  delete_modal.showModal();
+});
+
+document.getElementById("delete_confirm").addEventListener("click", async (e) => {
+  e.preventDefault();
+  if (!pendingDelete.id) return;
+
+  const res = await fetch(`/categories/${pendingDelete.id}/delete/`, {
+    method: "POST",
+    headers: { "X-CSRFToken": getCookie("csrftoken") },
+    credentials: "same-origin",
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || !data.ok) {
+    return showToast(data.error || "Error", "error");
+  }
+
+  pendingDelete.rowEl?.remove();
+  pendingDelete = { id: null, rowEl: null };
+  delete_modal.close();
+  showToast("Category deleted.", "success");
+});
+
+</script>
+{% endblock %}

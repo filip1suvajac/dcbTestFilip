@@ -1,46 +1,112 @@
 {% extends "library/dashboard_base.html" %} {% block content %}
+<div id="toast-root" class="toast z-[999] toast-top toast-middle hidden"></div>
 
-<div class="breadcrumbs text-sm pl-8 pt-7">
-  <ul>
-    <li>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        class="h-4 w-4 mr-2 stroke-current"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-        ></path>
-      </svg>
-      Home
-    </li>
-    <li>
-      <a href="/books">
+<div class="flex items-center justify-between px-8 pt-7">
+  <div class="breadcrumbs text-sm ">
+    <ul>
+      <li>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          class="h-4 w-4 stroke-current"
+          class="h-4 w-4 mr-2 stroke-current"
         >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
-          />
+            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+          ></path>
         </svg>
-        Books
-      </a>
-    </li>
-  </ul>
+        Home
+      </li>
+      <li>
+        <a href="/books">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="h-4 w-4 stroke-current"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+            />
+          </svg>
+          Books
+        </a>
+      </li>
+    </ul>
+  </div>
+  <button
+    class="btn btn-primary bg-primary hover:translate-y-[-2px] transition duration-150"
+    onclick="book_modal.showModal()"
+  >
+    Add new book
+  </button>
 </div>
 
+<dialog id="book_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold mb-5">Add new Book</h3>
+
+    <input id="book-name" class="input w-full mb-2" placeholder="Book name" />
+    <input id="book-author" class="input w-full mb-2" placeholder="Author" />
+
+    <input
+      id="book-year"
+      type="number"
+      min="0"
+      class="input w-full mb-2"
+      placeholder="Year"
+    />
+
+    <input
+      id="book-rating"
+      type="number"
+      min="1"
+      max="10"
+      class="input w-full mb-2"
+      placeholder="Rating (1-10, optional)"
+    />
+
+    <select id="book-category" class="select select-bordered w-full mb-2">
+      <option value="" disabled selected>Pick category</option>
+      {% for c in categories %}
+      <option value="{{ c.id }}">{{ c.name }}</option>
+      {% endfor %}
+    </select>
+
+    <textarea
+      id="book-desc"
+      class="textarea textarea-bordered w-full"
+      placeholder="Description"
+    ></textarea>
+
+    <div class="modal-action">
+      <button id="book-save" class="btn btn-primary">Save</button>
+      <button class="btn" onclick="book_modal.close()">Close</button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
+<dialog id="book_delete_modal" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Delete book?</h3>
+    <p class="py-2" id="book_delete_text"></p>
+    <div class="modal-action">
+      <button id="book-delete-confirm" class="btn btn-error">Delete</button>
+      <form method="dialog"><button class="btn">Cancel</button></form>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button>close</button></form>
+</dialog>
+
 <div
-  class="ml-10 mt-6 w-[95%] border bg-white border-stone-300 h-[calc(100vh-200px)] overflow-y-auto rounded-box"
+  class="ml-10 mt-6 w-[95%] border bg-base-100 border-base-300 h-[calc(100vh-200px)] overflow-y-auto rounded-box"
 >
   <table class="table table-zebra">
     <thead class="sticky top-0 bg-base-100 z-10">
@@ -51,7 +117,7 @@
         <th>Actions</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="books-table">
       {% for b in books %}
       <tr>
         <td>
@@ -65,7 +131,7 @@
         <td>{{ b.author }}</td>
         <td>{{ b.category.name }}</td>
         <td class=" flex gap-4 text-right">
-          <a class="btn btn-sm" href="#"
+          <a class="btn btn-sm" href="{% url 'book_edit' b.pk %}"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -82,7 +148,11 @@
             </svg>
             <span class="text-sm">Edit</span>
           </a>
-          <button class="btn btn-sm btn-error">
+          <button
+            class="btn btn-sm btn-error js-book-del"
+            data-id="{{ b.id }}"
+            data-name="{{ b.name }}"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -121,7 +191,7 @@
               </svg>
               {% else %}
               <svg
-                class="w-6 h-6 text-gray-400 hover:text-[#3A5AA3]"
+                class="w-6 h-6 text-gray-400 hover:text-primary"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="1.8"
@@ -146,5 +216,194 @@
     </tbody>
   </table>
 </div>
+{% endblock %} {% block extra_js %}
+<script>
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  }
+
+  function showToast(msg, type = "success") {
+    const root = document.getElementById("toast-root");
+    root.classList.remove("hidden");
+    root.innerHTML = `<div class="alert alert-${type}"><span>${msg}</span></div>`;
+    setTimeout(() => root.classList.add("hidden"), 2000);
+  }
+
+  document.getElementById("book-save").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("book-name").value.trim();
+    const author = document.getElementById("book-author").value.trim();
+    const year = document.getElementById("book-year").value;
+    const rating = document.getElementById("book-rating").value;
+    const categoryId = document.getElementById("book-category").value;
+    const desc = document.getElementById("book-desc").value.trim();
+
+    if (!name || !author || !year || !categoryId || !desc || !rating) {
+      return showToast("Izpolni obvezna polja.", "error");
+    }
+
+    const fd = new FormData();
+    fd.append("name", name);
+    fd.append("author", author);
+    fd.append("year", year);
+    fd.append("category_id", categoryId);
+    fd.append("desc", desc);
+    fd.append("rating", rating);
+
+    const res = await fetch("{% url 'book_create' %}", {
+      method: "POST",
+      headers: { "X-CSRFToken": getCookie("csrftoken") },
+      body: fd,
+      credentials: "same-origin",
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) return showToast(data.error || "Error.", "error");
+
+    document.getElementById("books-table").insertAdjacentHTML(
+      "afterbegin",
+      `
+      <tr>
+        <td>
+          <a
+            href="${data.detail_url}"
+            class="link link-hover cursor-pointer"
+          >
+            ${ data.name }
+          </a>
+        </td>
+        <td>${ data.author }</td>
+        <td>${ data.category_name }</td>
+        <td class=" flex gap-4 text-right">
+          <a class="btn btn-sm"  href="${data.edit_url}"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+              />
+            </svg>
+            <span class="text-sm" >Edit</span>
+          </a>
+          <button
+            class="btn btn-sm btn-error js-book-del"
+            data-id="${ data.id }"
+            data-name="${ data.name }"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+              />
+            </svg>
+            <span class="text-sm">Delete</span>
+          </button>
+          <form
+            method="POST"
+            action="${data.love_url}"
+            class="flex items-center justify-center"
+          >
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="bg-transparent border-0 p-0 m-0 cursor-pointer active:-translate-y-[2px] transition duration-150"
+            >
+              {% if data.loved %}
+              <svg
+                class="w-6 h-6 text-red-500"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 21s-9-4.78-9-12a5.25 5.25 0 0 1 9-3.25A5.25 5.25 0 0 1 21 9c0 7.22-9 12-9 12Z"
+                />
+              </svg>
+              {% else %}
+              <svg
+                class="w-6 h-6 text-gray-400 hover:text-primary"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+              {% endif %}
+            </button>
+          </form>
+        </td>
+      </tr>
+    `
+    );
+
+    document.getElementById("book-name").value = "";
+    document.getElementById("book-author").value = "";
+    document.getElementById("book-year").value = "";
+    document.getElementById("book-rating").value = "";
+    document.getElementById("book-category").value = "";
+    document.getElementById("book-desc").value = "";
+    book_modal.close();
+    showToast("Book Deleted!.", "success");
+  });
+
+  let pendingBookDelete = { id: null, rowEl: null };
+
+  document.getElementById("books-table").addEventListener("click", (e) => {
+    const btn = e.target.closest(".js-book-del");
+    if (!btn) return;
+
+    pendingBookDelete.id = btn.dataset.id;
+    pendingBookDelete.rowEl = btn.closest("tr");
+
+    document.getElementById(
+      "book_delete_text"
+    ).textContent = `Are you sure you want to delete "${btn.dataset.name}"?`;
+
+    book_delete_modal.showModal();
+  });
+
+  document
+    .getElementById("book-delete-confirm")
+    .addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!pendingBookDelete.id) return;
+
+      const res = await fetch(`/books/${pendingBookDelete.id}/delete/`, {
+        method: "POST",
+        headers: { "X-CSRFToken": getCookie("csrftoken") },
+        credentials: "same-origin",
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) return showToast(data.error || "Error.", "error");
+
+      pendingBookDelete.rowEl?.remove();
+      pendingBookDelete = { id: null, rowEl: null };
+      book_delete_modal.close();
+      showToast("Book deleted!.", "success");
+    });
+</script>
 
 {% endblock %}

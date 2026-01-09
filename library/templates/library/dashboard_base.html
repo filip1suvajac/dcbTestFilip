@@ -1,11 +1,16 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="sl" data-theme="light">
+<html lang="sl" data-theme="mylight">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -25,7 +30,7 @@
   <body>
     <div class="flex min-h-screen">
       <aside
-        class="w-48 h-screen text-stone-800 flex flex-col gap-12 pt-10 px-3 border-r border-stone-300"
+        class="w-48 h-screen text-textCol flex flex-col gap-12 pt-10 px-3 border-r border-base-300"
       >
         <div class="text-center mb-4">
           <img
@@ -40,8 +45,8 @@
             <li>
               <a
                 href="{% url 'books_list' %}"
-                class="flex items-center gap-3 px-6 py-4 rounded transition-all text-md hover:text-[#3A5AA3] duration-300 hover:bg-stone-50
-           {% if request.resolver_match.url_name == 'books_list' %}bg-stone-100 text-stone-900{% else %}text-stone-600{% endif %}"
+                class="flex items-center gap-3 px-6 py-4 rounded transition-all text-md hover:text-primary duration-300 hover:bg-base-50
+           {% if request.resolver_match.url_name == 'books_list' %}bg-base-200 text-textCol{% else %}text-base-600{% endif %}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +54,7 @@
                   viewBox="0 0 24 24"
                   stroke-width="{% if request.resolver_match.url_name == 'books_list' %}1.8{% else %}1.2{% endif %}"
                   stroke="currentColor"
-                  class="size-6 {% if request.resolver_match.url_name == 'books_list' %}text-[#3A5AA3]{% else %}text-stone-600{% endif %}"
+                  class="size-6 {% if request.resolver_match.url_name == 'books_list' %}text-primary{% else %}text-base-600{% endif %}"
                 >
                   <path
                     stroke-linecap="round"
@@ -65,8 +70,8 @@
             <li>
               <a
                 href="{% url 'categories_list' %}"
-                class="flex items-center gap-3 px-6 py-4 rounded transition-all text-md hover:text-[#3A5AA3] duration-300 hover:bg-stone-50
-           {% if request.resolver_match.url_name == 'categories_list' %}bg-stone-100 text-stone-900{% else %}text-stone-600{% endif %}"
+                class="flex items-center gap-3 px-6 py-4 rounded transition-all text-md hover:text-primary duration-300 hover:bg-base-50
+           {% if request.resolver_match.url_name == 'categories_list' %}bg-base-200 text-textCol{% else %}text-base-600{% endif %}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +79,7 @@
                   viewBox="0 0 24 24"
                   stroke-width="{% if request.resolver_match.url_name == 'categories_list' %}1.8{% else %}1.2{% endif %}"
                   stroke="currentColor"
-                  class="size-6 {% if request.resolver_match.url_name == 'categories_list' %}text-[#3A5AA3]{% else %}text-stone-600{% endif %}"
+                  class="size-6 {% if request.resolver_match.url_name == 'categories_list' %}text-primary{% else %}text-base-600{% endif %}"
                 >
                   <path
                     stroke-linecap="round"
@@ -90,8 +95,8 @@
             <li>
               <a
                 href="{% url 'mybooks' %}"
-                class="flex items-center gap-3 px-6 py-4 rounded text-md hover:text-[#3A5AA3] transition-all duration-300 hover:bg-stone-50
-           {% if request.resolver_match.url_name == 'mybooks' %}bg-stone-100 text-stone-900{% else %}text-stone-600{% endif %}"
+                class="flex items-center gap-3 px-6 py-4 rounded text-md hover:text-primary transition-all duration-300 hover:bg-base-50
+           {% if request.resolver_match.url_name == 'mybooks' %}bg-base-200 text-textCol{% else %}text-base-600{% endif %}"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +104,7 @@
                   viewBox="0 0 24 24"
                   stroke-width="{% if request.resolver_match.url_name == 'mybooks' %}1.8{% else %}1.2{% endif %}"
                   stroke="currentColor"
-                  class="size-6 {% if request.resolver_match.url_name == 'mybooks' %}text-[#3A5AA3]{% else %}text-stone-600{% endif %}"
+                  class="size-6 {% if request.resolver_match.url_name == 'mybooks' %}text-primary{% else %}text-base-600{% endif %}"
                 >
                   <path
                     stroke-linecap="round"
@@ -116,10 +121,42 @@
       </aside>
 
       <div class="flex flex-col w-full">
-        <div
-          class="navbar justify-end text-neutral-content border-b border-stone-300"
-        >
-          <h1 class="text-xl pr-6 text-stone-600 font-medium">
+        <div class="navbar justify-between border-b border-base-300">
+          <label class="toggle ml-3 toggle-lg text-base-content">
+            <input type="checkbox" id="theme-toggle" />
+            <svg
+              aria-label="enabled"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="size-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+              />
+            </svg>
+
+            <svg
+              aria-label="disabled"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="size-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+              />
+            </svg>
+          </label>
+          <h1 class="text-xl pr-6 text-textCol font-medium">
             mojaDigitalnaKnjižnica
           </h1>
           <button
@@ -132,10 +169,8 @@
 
           <dialog id="my_modal_1" class="modal">
             <div class="modal-box">
-              <h3 class="text-lg text-stone-800 font-bold">Attention!</h3>
-              <p class="py-4 text-stone-800">
-                Are you sure you want to logout?
-              </p>
+              <h3 class="text-lg text-textCol font-bold">Attention!</h3>
+              <p class="py-4 text-textCol">Are you sure you want to logout?</p>
               <div class="flex justify-end gap-2 items-center mr-5">
                 <form method="POST" action="{% url 'logout' %}">
                   {% csrf_token %}
@@ -153,10 +188,29 @@
             </div>
           </dialog>
         </div>
-        <main class="flex-1 bg-stone-100 overflow-hidden">
+        <main class="flex-1 bg-base-200 overflow-hidden">
           {% block content %}{% endblock %}
         </main>
       </div>
     </div>
+    <script>
+      const key = "theme";
+      const html = document.documentElement;
+      const toggle = document.getElementById("theme-toggle");
+
+      const saved = localStorage.getItem(key);
+      const initial = saved || html.getAttribute("data-theme") || "light";
+      html.setAttribute("data-theme", initial);
+
+      if (toggle) toggle.checked = (initial === "dark" || initial === "night");
+
+      toggle?.addEventListener("change", () => {
+        const next = toggle.checked ? "dark" : "light";
+        html.setAttribute("data-theme", next);
+        localStorage.setItem(key, next);
+      });
+    </script>
+
+    {% block extra_js %}{% endblock %}
   </body>
 </html>

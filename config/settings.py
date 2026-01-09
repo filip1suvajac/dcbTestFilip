@@ -26,7 +26,17 @@ SECRET_KEY = 'django-insecure-36ohed9yj4ns8h@-hi+!q)uo$x3707xs*kyx3m^v=8@-af8@v(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+import os
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "dcbtestfilip.onrender.com",
+]
+
+if os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
+    ALLOWED_HOSTS.append(os.environ["RENDER_EXTERNAL_HOSTNAME"])
+
 
 SESSION_COOKIE_AGE = 60 * 30  
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False

@@ -1,7 +1,7 @@
 {% extends "library/dashboard_base.html" %} {% block content %}
 
 <div class="breadcrumbs text-sm pl-8 pt-7">
-  <ul>
+  <ul class="flex flex-wrap whitespace-normal">
     <li>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@
 <div class="ml-8 mt-6 max-w-[90%] bg-base-100 rounded-box p-8">
   <h1 class="text-2xl font-semibold mb-4">{{ book.name }}</h1>
 
-  <div class="space-y-2 text-base-700">
+  <div class="space-y-2 text-stone-700">
     <p><strong>Author:</strong> {{ book.author }}</p>
     <p><strong>Year:</strong> {{ book.year }}</p>
     <p><strong>Category:</strong> {{ book.category.name }}</p>

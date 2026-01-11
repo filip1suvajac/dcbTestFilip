@@ -21,10 +21,10 @@
     />
   </head>
   <body>
-    <div class="h-screen bg-primary flex flex-col gap-8 items-center justify-center">
-      <div class=" flex gap-8 z-10">
+    <div class="min-h-screen bg-primary flex flex-col gap-6 sm:gap-8 items-center justify-center px-4 sm:px-0">
+      <div class="flex flex-wrap justify-center gap-4 sm:gap-8 z-10">
         <div class="hover-3d">
-          <figure class="w-40 rounded-2xl">
+          <figure class="w-28 sm:w-36 lg:w-40 rounded-2xl">
             <img
               src="{% static 'library/bible.jpg' %}"
               alt="Tailwind CSS 3D card"
@@ -41,7 +41,7 @@
         </div>
 
         <div class="hover-3d">
-          <figure class="w-40 rounded-2xl">
+          <figure class="w-28 sm:w-36 lg:w-40 rounded-2xl">
             <img
               src="{% static 'library/donq.jpg' %}"
               alt="Tailwind CSS 3D hover"
@@ -57,8 +57,8 @@
           <div></div>
         </div>
 
-        <div class="hover-3d">
-          <figure class="w-40 rounded-2xl">
+        <div class="hidden min-[450px]:inline-block hover-3d">
+          <figure class="w-28 sm:w-36 lg:w-40 rounded-2xl">
             <img
               src="{% static 'library/mocking.jpg' %}"
               alt="Tailwind CSS 3D hover"
@@ -75,44 +75,43 @@
         </div>
       </div>
 
-    <form method="POST" class="flex flex-col items-center gap-6">
-    {% csrf_token %}
+      <form method="POST" class="flex flex-col items-center gap-4 sm:gap-6 w-full">
+        {% csrf_token %}
 
-    <label class="input input-lg w-72">
-      <svg
-        class="h-[1em] opacity-50"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <g
-          stroke-linejoin="round"
-          stroke-linecap="round"
-          stroke-width="2.5"
-          fill="none"
-          stroke="currentColor"
-        >
-          <path
-            d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
-          ></path>
-          <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
-        </g>
-      </svg>
-      <input
-        type="password"
-        name="password"
-        required
-        placeholder="Password"
-        minlength="6"
-        class=
-      />
-    </label>
-      {% if error %}<p class="text-red-500">{{ error }}</p>{% endif %}
+        <label class="input input-lg w-full max-w-xs sm:w-72">
+          <svg
+            class="h-[1em] opacity-50"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <g
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              stroke-width="2.5"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
+              ></path>
+              <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
+            </g>
+          </svg>
+          <input
+            type="password"
+            name="password"
+            required
+            placeholder="Password"
+            minlength="6"
+            class=
+          />
+        </label>
+        {% if error %}<p class="text-red-500">{{ error }}</p>{% endif %}
 
-    <button type="submit" class="btn btn-lg bg-base-100 mt-[-10px] text-md text-base-700 border-[#e5e5e5]">
-      Login 
-    </button>
-  </form>
-    
+        <button type="submit" class="btn btn-lg bg-base-100 mt-[-10px] text-md text-base-700 border-[#e5e5e5] w-full max-w-xs sm:w-auto">
+          Login
+        </button>
+      </form>
   </body>
   {% endblock %}
 </html>

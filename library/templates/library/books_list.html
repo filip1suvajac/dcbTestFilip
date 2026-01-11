@@ -1,7 +1,9 @@
 {% extends "library/dashboard_base.html" %} {% block content %}
 <div id="toast-root" class="toast z-[999] toast-top toast-middle hidden"></div>
 
-<div class="flex items-center justify-between px-8 pt-7">
+<div
+  class="flex flex-col justify-start min-[500px]:items-center min-[500px]:justify-between px-8 pt-7 min-[500px]:flex-row"
+>
   <div class="breadcrumbs text-sm ">
     <ul>
       <li>
@@ -106,7 +108,7 @@
 </dialog>
 
 <div
-  class="ml-10 mt-6 w-[95%] border bg-base-100 border-base-300 h-[calc(100vh-200px)] overflow-y-auto rounded-box"
+  class="ml-5 md:ml-10 mt-6 w-[95%] border bg-base-100 border-base-300 h-[calc(100vh-200px)] overflow-y-auto rounded-box"
 >
   <table class="table table-zebra">
     <thead class="sticky top-0 bg-base-100 z-10">
@@ -120,7 +122,7 @@
     <tbody id="books-table">
       {% for b in books %}
       <tr>
-        <td>
+        <td class="align-middle">
           <a
             href="{% url 'book_detail' b.pk %}"
             class="link link-hover cursor-pointer"
@@ -128,10 +130,12 @@
             {{ b.name }}
           </a>
         </td>
-        <td>{{ b.author }}</td>
-        <td>{{ b.category.name }}</td>
-        <td class=" flex gap-4 text-right">
-          <a class="btn btn-sm" href="{% url 'book_edit' b.pk %}"
+        <td class="align-middle">{{ b.author }}</td>
+        <td class="align-middle">{{ b.category.name }}</td>
+        <td class="space-y-2 text-right md:flex md:space-y-0 md:gap-4 ">
+          <a
+            class="btn btn-sm w-full md:w-auto "
+            href="{% url 'book_edit' b.pk %}"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -146,10 +150,10 @@
                 d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
               />
             </svg>
-            <span class="text-sm">Edit</span>
+            <span class="hidden md:inline-block md:text-sm">Edit</span>
           </a>
           <button
-            class="btn btn-sm btn-error js-book-del"
+            class="btn btn-sm w-full md:w-auto btn-error js-book-del"
             data-id="{{ b.id }}"
             data-name="{{ b.name }}"
           >
@@ -167,7 +171,7 @@
                 d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
               />
             </svg>
-            <span class="text-sm">Delete</span>
+            <span class="hidden md:inline-block md:text-sm">Delete</span>
           </button>
           <form
             method="POST"
@@ -293,7 +297,7 @@
                 d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
               />
             </svg>
-            <span class="text-sm" >Edit</span>
+            <spanclass="hidden min-[500px]:inline-block min-[450px]:text-sm">Edit</spanclass=>
           </a>
           <button
             class="btn btn-sm btn-error js-book-del"
@@ -314,7 +318,7 @@
                 d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
               />
             </svg>
-            <span class="text-sm">Delete</span>
+            <span class="hidden min-[500px]:inline-block min-[450px]:text-sm">Delete</span>
           </button>
           <form
             method="POST"

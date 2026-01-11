@@ -1,63 +1,76 @@
 {% extends "library/dashboard_base.html" %} {% block content %}
 <div id="toast-root" class="toast toast-top toast-middle hidden"></div>
 
-
-<div class="flex items-center justify-between px-8 pt-7">
+<div
+  class="flex flex-col justify-start min-[500px]:items-center min-[500px]:justify-between px-8 pt-7 min-[500px]:flex-row"
+>
   <div class="breadcrumbs text-sm ">
-  <ul>
-    <li>
+    <ul>
+      <li>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          class="h-4 w-4 mr-2 stroke-current">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
-        </svg>
-        Home
-    </li>
-    <li>
-      <a href="/categories">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          class="h-4 w-4 stroke-current"
+          class="h-4 w-4 mr-2 stroke-current"
         >
           <path
-            stroke-linejoin="round"
             stroke-linecap="round"
+            stroke-linejoin="round"
             stroke-width="2"
-            d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"
-          />
-      </svg>
-        Categories
-      </a>
-    </li>
-  </ul>
+            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+          ></path>
+        </svg>
+        Home
+      </li>
+      <li>
+        <a href="/categories">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="h-4 w-4 stroke-current"
+          >
+            <path
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"
+            />
+          </svg>
+          Categories
+        </a>
+      </li>
+    </ul>
   </div>
-  <button class="btn btn-primary bg-primary hover:translate-y-[-2px] transition-all duration-150" onclick="my_modal_2.showModal()">Add new Category</button>
+  <button
+    class="btn btn-primary bg-primary hover:translate-y-[-2px] transition-all duration-150"
+    onclick="my_modal_2.showModal()"
+  >
+    Add new Category
+  </button>
 
-<dialog id="my_modal_2" class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold mb-5">Add new Category</h3>
+  <dialog id="my_modal_2" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold mb-5">Add new Category</h3>
 
-    <input id="cat-name" type="text" placeholder="Category name"
-           class="input w-full mt-2" />
+      <input
+        id="cat-name"
+        type="text"
+        placeholder="Category name"
+        class="input w-full mt-2"
+      />
 
-    <div class="modal-action">
-      <button id="cat-save" class="btn btn-primary">Save</button>
-      <button class="btn btn-error btn-outline" onclick="my_modal_2.close()">Close</button>
+      <div class="modal-action">
+        <button id="cat-save" class="btn btn-primary">Save</button>
+        <button class="btn btn-error btn-outline" onclick="my_modal_2.close()">
+          Close
+        </button>
+      </div>
     </div>
-  </div>
 
-  <form method="dialog" class="modal-backdrop"><button>close</button></form>
-</dialog>
-
+    <form method="dialog" class="modal-backdrop"><button>close</button></form>
+  </dialog>
 </div>
 
 <dialog id="delete_modal" class="modal">
@@ -72,171 +85,181 @@
   <form method="dialog" class="modal-backdrop"><button>close</button></form>
 </dialog>
 
-
 <div class="h-full flex justify-left ml-10">
+  <div
+    class="mt-6 w-[95%] h-[calc(100vh-200px)] overflow-y-auto rounded-box bg-base-100 border bg-base-100 border-base-300"
+  >
+    <div class="overflow-x-auto">
+      <table class="table table-zebra">
+        <thead class="sticky top-0 bg-base-100 z-10">
+          <tr>
+            <th>Category</th>
+            <th>Book Count</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="category-table">
+          {% for c in categories %}
+          <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.books.count }}</td>
+            <td class="w-[1%] whitespace-nowrap text-right">
+              <button
+                class="btn btn-sm btn-error js-del"
+                data-id="{{ c.id }}"
+                data-name="{{ c.name }}"
+                data-count="{{ c.books.count }}"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                  />
+                </svg>
+                <span
+                  class="hidden min-[500px]:inline-block min-[450px]:text-sm"
+                  >Delete</span
+                >
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="text-center opacity-60">
+              No categories yet.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="overflow-x-auto"></div>
+    </div>
 
-<div class="mt-6 w-[95%] h-[calc(100vh-200px)] overflow-y-auto rounded-box bg-base-100 border bg-base-100 border-base-300">
-  <table class="table table-zebra">
-    <thead class="sticky top-0 bg-base-100 z-10">
-      <tr>
-        <th>Category</th>
-        <th>Book Count</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="category-table">
-  {% for c in categories %}
-    <tr>
-    <td>{{ c.name }}</td>
-    <td>{{ c.books.count }}</td>
-    <td class="w-[1%] whitespace-nowrap text-right">
-      <button class="btn btn-sm btn-error js-del"
-          data-id="{{ c.id }}"
-          data-name="{{ c.name }}"
-          data-count="{{ c.books.count }}">
-          
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-          />
-        </svg>
-        <span class="text-sm">Delete</span>
-      </button>
-      </td>
+    {% endblock %} {% block extra_js %}
+
+    <script>
+        console.log("categories modal js loaded");
+
+        function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        function showToast(msg, type="success") {
+          const root = document.getElementById("toast-root");
+          root.classList.remove("hidden");
+          root.innerHTML = `
+            <div class="alert alert-${type}">
+              <span>${msg}</span>
+            </div>
+          `;
+          setTimeout(() => root.classList.add("hidden"), 2000);
+        }
+
+        document.getElementById("cat-save").addEventListener("click", async () => {
+          const nameEl = document.getElementById("cat-name");
+          const name = nameEl.value.trim();
+          if (!name) return showToast("Enter Category Name.", "error");
+
+          const formData = new FormData();
+          formData.append("name", name);
+
+          const res = await fetch("{% url 'category_create' %}", {
+            method: "POST",
+            headers: { "X-CSRFToken": getCookie("csrftoken") },
+            body: formData,
+            credentials: "same-origin",
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) {
+            return showToast(data.error || "Error.", "error");
+          }
+
+          const tbody = document.getElementById("category-table");
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+          <td>${ data.name }</td>
+          <td>${ data.book_count }</td>
+          <td class="w-[1%] whitespace-nowrap text-right">
+            <button class="btn btn-sm btn-error">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                />
+              </svg>
+              <span class="hidden min-[500px]:inline-block min-[450px]:text-sm">Delete</span>
+            </button>
+            </td>
+          `;
+          tbody.prepend(tr);
+
+          nameEl.value = "";
+          my_modal_2.close();
+          showToast("Uspešno dodano.", "success");
+        });
+        let pendingDelete = { id: null, rowEl: null };
+
+      document.getElementById("category-table").addEventListener("click", (e) => {
+        const btn = e.target.closest(".js-del");
+        if (!btn) return;
+
+        const id = btn.dataset.id;
+        const name = btn.dataset.name;
+        const count = Number(btn.dataset.count || 0);
+
+        if (count > 0) {
+          return showToast("Cannot delete a category, which has a book to it.", "error");
+        }
+
+        pendingDelete.id = id;
+        pendingDelete.rowEl = btn.closest("tr");
+
+        document.getElementById("delete_text").textContent =
+          `Are you sure you want to delete "${name}"?`;
+
+        delete_modal.showModal();
+      });
+
+      document.getElementById("delete_confirm").addEventListener("click", async (e) => {
+        e.preventDefault();
+        if (!pendingDelete.id) return;
+
+        const res = await fetch(`/categories/${pendingDelete.id}/delete/`, {
+          method: "POST",
+          headers: { "X-CSRFToken": getCookie("csrftoken") },
+          credentials: "same-origin",
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          return showToast(data.error || "Error", "error");
+        }
+
+        pendingDelete.rowEl?.remove();
+        pendingDelete = { id: null, rowEl: null };
+        delete_modal.close();
+        showToast("Category deleted.", "success");
+      });
+    </script>
+    {% endblock %}
   </div>
-  {% empty %}
-      <tr>
-        <td colspan="5" class="text-center opacity-60">No categories yet.</td>
-      </tr>
-  {% endfor %} {% endblock %}
 </div>
-</div>
-
-{% block extra_js %}
-
-<script>
-  console.log("categories modal js loaded");
-
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  }
-
-  function showToast(msg, type="success") {
-    const root = document.getElementById("toast-root");
-    root.classList.remove("hidden");
-    root.innerHTML = `
-      <div class="alert alert-${type}">
-        <span>${msg}</span>
-      </div>
-    `;
-    setTimeout(() => root.classList.add("hidden"), 2000);
-  }
-
-  document.getElementById("cat-save").addEventListener("click", async () => {
-    const nameEl = document.getElementById("cat-name");
-    const name = nameEl.value.trim();
-    if (!name) return showToast("Enter Category Name.", "error");
-
-    const formData = new FormData();
-    formData.append("name", name);
-
-    const res = await fetch("{% url 'category_create' %}", {
-      method: "POST",
-      headers: { "X-CSRFToken": getCookie("csrftoken") },
-      body: formData,
-      credentials: "same-origin",
-    });
-
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok || !data.ok) {
-      return showToast(data.error || "Error.", "error");
-    }
-
-    const tbody = document.getElementById("category-table");
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-    <td>${ data.name }</td>
-    <td>${ data.book_count }</td>
-    <td class="w-[1%] whitespace-nowrap text-right">
-      <button class="btn btn-sm btn-error">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-          />
-        </svg>
-        <span class="text-sm">Delete</span>
-      </button>
-      </td>
-    `;
-    tbody.prepend(tr);
-
-    nameEl.value = "";
-    my_modal_2.close();
-    showToast("Uspešno dodano.", "success");
-  });
-  let pendingDelete = { id: null, rowEl: null };
-
-document.getElementById("category-table").addEventListener("click", (e) => {
-  const btn = e.target.closest(".js-del");
-  if (!btn) return;
-
-  const id = btn.dataset.id;
-  const name = btn.dataset.name;
-  const count = Number(btn.dataset.count || 0);
-
-  if (count > 0) {
-    return showToast("Cannot delete a category, which has a book to it.", "error");
-  }
-
-  pendingDelete.id = id;
-  pendingDelete.rowEl = btn.closest("tr");
-
-  document.getElementById("delete_text").textContent =
-    `Are you sure you want to delete "${name}"?`;
-
-  delete_modal.showModal();
-});
-
-document.getElementById("delete_confirm").addEventListener("click", async (e) => {
-  e.preventDefault();
-  if (!pendingDelete.id) return;
-
-  const res = await fetch(`/categories/${pendingDelete.id}/delete/`, {
-    method: "POST",
-    headers: { "X-CSRFToken": getCookie("csrftoken") },
-    credentials: "same-origin",
-  });
-
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok || !data.ok) {
-    return showToast(data.error || "Error", "error");
-  }
-
-  pendingDelete.rowEl?.remove();
-  pendingDelete = { id: null, rowEl: null };
-  delete_modal.close();
-  showToast("Category deleted.", "success");
-});
-
-</script>
-{% endblock %}

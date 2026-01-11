@@ -26,6 +26,13 @@ SECRET_KEY = 'django-insecure-36ohed9yj4ns8h@-hi+!q)uo$x3707xs*kyx3m^v=8@-af8@v(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+STORAGES = {
+  "staticfiles": {
+    "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+  },
+}
+
+
 import os
 
 ALLOWED_HOSTS = [
